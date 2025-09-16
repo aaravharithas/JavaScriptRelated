@@ -37,6 +37,7 @@ function Navigation() {
       </div>
       <div style={{padding:"1rem", textAlign:"end"}}>
         <Link to='/register'><button style={{marginRight:"0.5rem"}}>Register</button></Link>
+        <Link to='/login'><button style={{marginRight:"0.5rem"}}>Login</button></Link>
         <button>Cart</button>
       </div>
     </div>

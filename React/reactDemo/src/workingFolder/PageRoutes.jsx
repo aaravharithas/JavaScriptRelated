@@ -16,6 +16,7 @@ import Javascript from "./PageForRoutes/CourseChildren/Javascript";
 import Navigation from "./PageForRoutes/Navigation";
 import ApiDemo from "./PageForRoutes/ApiProduct/ApiDemo";
 import Product from "./PageForRoutes/ApiProduct/Product";
+import Login from "./PageForRoutes/login";
 
 function PageRoutes() {
   let routes = createBrowserRouter([
@@ -38,6 +39,10 @@ function PageRoutes() {
         {
           path: "/register",
           element: <Register/>,
+        },
+        {
+          path: "/login",
+          element: <Login/>,
         },
         {
           path: "/apidemo",
