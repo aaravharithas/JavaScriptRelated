@@ -5,15 +5,17 @@ function Login(){
     const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors },
   } = useForm()
   
-  const datalist = []
   let [members,setMembers] = useState([])
   
   function onsubmit (data){
+    console.log(data)
     setMembers([...members,data])
+    reset()
     }
 
 

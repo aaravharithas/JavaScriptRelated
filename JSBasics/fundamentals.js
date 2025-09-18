@@ -724,8 +724,93 @@ class PersonCls {
     calbirth(){
         console.log(`${this.name}'s birth year according to your age from 2025 is : ${2025 - this.age}.`);
     }
+
+    // using static: it is used to add functionality to the Constuctor Object like Array etc. (not to the instance: personcls)
+    static hey(obj){
+        console.log("hello: ",obj.name);
+    }
+
 }
 
 const personcls1 = new PersonCls("Aarav",23);
 
 personcls1.calbirth() // Aarav's birth year according to your age from 2025 is : 2002.
+PersonCls.hey(personcls1); // hello:  Aarav
+
+
+// --------------------------------- getter and setter -------------------------
+
+let PersonObj = {
+    name:"Aarav",
+    Marks:[76,45,87,34,87],
+
+    get lastElement(){
+        return this.Marks.slice(-1)[0];
+    },
+
+    set addElement(num){
+        this.Marks.push(num);
+    }
+}
+
+console.log(PersonObj); // {name: 'Aarav', Marks: Array(5)}
+// getting element using getter
+console.log("getter: ",PersonObj.lastElement) // getter:  87
+// adding element using setter
+PersonObj.addElement = 69;
+console.log("setter: ",PersonObj.Marks) // setter:  (6) [76, 45, 87, 34, 87, 69]
+
+// ---------------------------- Objecte create --------------
+let Person = {
+    calage(){
+        console.log(2025-this.birthyear)
+    }
+}
+
+let personInstance = Object.create(Person);
+console.log("Start: ",personInstance); // Start: {} : where the function is in the prototype method
+personInstance.name = "Aarav";
+personInstance.birthyear = 2002;
+personInstance.calage()
+console.log("End: ",personInstance) // End: {name: 'Aarav', birthyear: 2002}
+
+
+// ------------------------------------ Inheritance ----------------------------
+// using the class method from previous code :
+// For reference :
+class PersonCls {
+    constructor(name,age){
+        this.name = name;
+        this.age = age;
+    }
+    calbirth(){console.log(`${this.name}'s birth year according to your age from 2025 is : ${2025 - this.age}.`);}
+    static hey(obj){console.log("hello: ",obj.name);}
+}
+
+// creating child class from PersonCls
+class StudentCls1 extends PersonCls {
+    constructor(name,age,height){
+        super(name,age);
+        this.height = height;
+    }
+    intro(){
+        console.log(`From StudenCls1: ${this.name} is ${this.age} years old and ${this.height}cm tall.`)
+    }
+}
+// there is no need for constructor function if child have same arguments same as parent:
+// Like:
+class StudentCls2 extends PersonCls {
+myintro(){
+        console.log(`From StudenCls2: ${this.name} is ${this.age} years old.`)
+    }
+    // Overriding methods
+    calbirth(){console.log(`From StudentCls2: ${this.name}'s birth year from 2025 is : ${2025 - this.age}.`);}
+}
+
+let student1 = new StudentCls1('Aarav',23,174);
+let student2 = new StudentCls2('Gaurav',23);
+student1.intro() // From StudenCls1: Aarav is 23 years old and 174cm tall.
+student2.myintro() // From StudenCls2: Gaurav is 23 years old.
+
+student1.calbirth() // Aarav's birth year according to your age from 2025 is : 2002.
+student2.calbirth() // From StudentCls2: Gaurav's birth year from 2025 is : 2002.
