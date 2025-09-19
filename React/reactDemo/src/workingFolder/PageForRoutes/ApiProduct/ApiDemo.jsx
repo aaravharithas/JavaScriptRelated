@@ -44,6 +44,7 @@ function ApiDemo(){
 
     return(
         <>
+        { productData && (<>
         <h2>This is API Demo Page</h2>
         <div>
             <button onClick={()=>{setCurrent(0)}} style={{margin:"0.5rem"}} disabled={current===0}>First</button>
@@ -63,6 +64,7 @@ function ApiDemo(){
             )
             )}
         </div>
+        </>)}
         </>
     )
 }

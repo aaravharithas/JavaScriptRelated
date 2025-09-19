@@ -15,8 +15,10 @@ import Java from "./PageForRoutes/CourseChildren/Java";
 import Javascript from "./PageForRoutes/CourseChildren/Javascript";
 import Navigation from "./PageForRoutes/Navigation";
 import ApiDemo from "./PageForRoutes/ApiProduct/ApiDemo";
+import ApiPost from "./PageForRoutes/ApiPosts/ApiPost";
 import Product from "./PageForRoutes/ApiProduct/Product";
-import Login from "./PageForRoutes/login";
+import Login from "./PageForRoutes/Login";
+import DemoTest from "./PageForRoutes/Demotest";
 
 function PageRoutes() {
   let routes = createBrowserRouter([
@@ -37,6 +39,10 @@ function PageRoutes() {
           element: <Contact />,
         },
         {
+          path: "/demotest",
+          element: <DemoTest/>,
+        },
+        {
           path: "/register",
           element: <Register/>,
         },
@@ -47,6 +53,10 @@ function PageRoutes() {
         {
           path: "/apidemo",
           element: <ApiDemo/>,
+        },
+        {
+          path: "/apipost",
+          element: <ApiPost/>,
         },
         {
           path: "/product/:id",
