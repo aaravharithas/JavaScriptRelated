@@ -11,12 +11,18 @@ const uploadFile = require("../services/project.services")
 
 router.use(cors())
 
-router.get(("/","/songs","/addsongs"),async(req,res)=>{
+router.get(["/","/songs"],async(req,res)=>{
     let projectData = await projectModel.find()
     res.json({"message":"file running successfully",
         "data":projectData})
 })
 
+router.get("/addsongs",async(req,res)=>{
+    let projectData = await projectModel.find()
+    res.json({"message":"Use html form with multimedia field to post multiple audio files at once",
+            "Structure":"{audioFile:multipleFiles, mood:mood}",
+        "data":projectData})
+})
 
 router.post("/songs",storage.single("audioFile"),async (req,res)=>{
     // console.log("Request body: ",req.body);

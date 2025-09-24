@@ -797,7 +797,7 @@ class StudentCls1 extends PersonCls {
         console.log(`From StudenCls1: ${this.name} is ${this.age} years old and ${this.height}cm tall.`)
     }
 }
-// there is no need for constructor function if child have same arguments same as parent:
+// there is no need for constructor function if child have same arguments as parent:
 // Like:
 class StudentCls2 extends PersonCls {
 myintro(){
@@ -814,3 +814,79 @@ student2.myintro() // From StudenCls2: Gaurav is 23 years old.
 
 student1.calbirth() // Aarav's birth year according to your age from 2025 is : 2002.
 student2.calbirth() // From StudentCls2: Gaurav's birth year from 2025 is : 2002.
+
+// ------------------- Inheritance Using Objects:
+// use previous Class: Person
+const PersonClass = {
+    init(name,age){
+    this.name = name;
+    this.age = age;
+    },
+    calbirth(){
+        console.log(`${this.name}'s birth year according to your age from 2025 is : ${2025 - this.age}.`);
+    }
+}
+
+let ChildPerson = Object.create(PersonClass) // creating the child class From Person\
+ChildPerson.init = function(name,age,course){ // extending the init constructor function like super function.
+    PersonClass.init.call(this,name,age,course);
+    this.course = course;
+}
+ChildPerson.intro = function(){
+    console.log(`hi, ${this.name} age: ${this.age}, course: ${this.course}`)
+        }; // adding function to the child class
+
+let ChildInstance = Object.create(ChildPerson); // creating instance of the Child Class
+
+ChildInstance.init("Aarav",23,"Python");
+ChildInstance.calbirth() // Aarav's birth year according to your age from 2025 is : 2002.
+ChildInstance.intro() // hi, Aarav age: 23, course: Python
+
+// ------------------------------------- Class Example:
+class Account{
+    constructor(name,currency,pin){
+        // Public methods
+        this.name = name;
+        this.currency = currency;
+        this.locate = navigator.language; // using navigator jus for fun
+        this.location = "India";
+        // Private methods
+        this._pin = pin; // unlike python you can still access it by: Instance._pin
+        this._movements = [];
+        console.log(`Hi ${this.name}, your account has been created with ${this.locate}`);
+    }
+
+    deposite(val){
+        this._movements.push(val)
+    }
+    // Private Function
+    _loan_approve(val){
+        return true
+    }
+
+    request_loan(val){
+        if(this._loan_approve(val)){
+            this.deposite(val)
+        }
+    }
+
+    set withdraw(val){
+        this.deposite(-val)
+    }
+    get balance(){
+        return this._movements.reduce((acc,el)=>{return acc + el },0)
+    }
+    transactions(){
+        console.log('Your last transactions are: ',this._movements);
+    }
+}
+
+let account1 = new Account("Aarav","INR",1234)
+account1.deposite(120)
+account1.withdraw = 45
+account1.request_loan(1000)
+console.log('Your balance is: ',account1.balance)
+account1.transactions()
+
+// --------------------------------------: Public and Private in Class -----------
+
