@@ -19,6 +19,8 @@ import ApiPost from "./PageForRoutes/ApiPosts/ApiPost";
 import Product from "./PageForRoutes/ApiProduct/Product";
 import Login from "./PageForRoutes/Login";
 import DemoTest from "./PageForRoutes/Demotest";
+import ReduxDemo from "./PageForRoutes/ReduxDemo/ReduxDemo";
+import Cart from "./PageForRoutes/ApiProduct/Cart";
 
 function PageRoutes() {
   let routes = createBrowserRouter([
@@ -49,6 +51,14 @@ function PageRoutes() {
         {
           path: "/login",
           element: <Login/>,
+        },
+        {
+          path: "/cart",
+          element: <Cart/>,
+        },
+        {
+          path: "/reduxdemo",
+          element: <ReduxDemo/>
         },
         {
           path: "/apidemo",

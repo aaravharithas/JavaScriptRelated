@@ -343,6 +343,46 @@ console.log('Addition result is: ',x);
 console.log(typeof(typeof(int_var)));
 
 
+// ------------------------------------ Promise Example:
+
+function sleep(time){
+    return new Promise((resolve,reject) => {
+        let value = Math.round(Math.random()*10)
+        if(value>3){
+            setTimeout(() => {
+                resolve(`Promise Resolved: ${value}`);
+                console.log(`hi Promise Resolved: ${value}`)
+                console.log(`hello after ${time} seconds, Random Number: ${Math.random() * 10}`);
+        }, time * 1000);
+                    }
+        else {
+            reject(`Promise Rejected: ${value}`)
+        }
+                                            }
+                        );
+}
+
+sleep(2)
+.then((res)=>{
+    return sleep(2);
+})
+.then((res)=>{
+    return sleep(2);
+})
+.catch((rej)=>{
+    console.log(rej);
+});
+
+// --------------------------------------  API call Example:
+
+let url = "https://demohotelsapi.pythonanywhere.com/hotels/"
+
+fetch("url")
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(()=>{console.log("error while fetching api")});
+
+
 // ------------------------------------- DOM manipulation ------------------------------------------
 
 // get element from html
@@ -890,3 +930,55 @@ account1.transactions()
 
 // --------------------------------------: Public and Private in Class -----------
 
+class Account{
+    // Public Fields
+    locate = navigator.language; // using navigator jus for fun
+    // Private Fields : not working properly till 2025
+    #movements = [];
+    #pin;
+    // static field : only accessible by the class.
+    static location = "India";
+
+    constructor(name,currency,pin){
+        this.name = name;
+        this.currency = currency;
+        this.#pin = pin;
+        console.log(`Hi ${this.name}, your account has been created with ${this.locate}`);
+    }
+
+    deposite(val){
+        this.#movements.push(val)
+        return this; // it helps in chaning the methods of the class
+    }
+    // Private Function
+    #loan_approve(val){
+        return true
+    }
+
+    request_loan(val){
+        if(this.#loan_approve(val)){
+            this.deposite(val)
+            return this;
+        }
+    }
+
+    set withdraw(val){
+        this.deposite(-val)
+        return this;
+    }
+    get balance(){
+        return this.#movements.reduce((acc,el)=>{return acc + el },0)
+    }
+    transactions(){
+        console.log('Your last transactions are: ',this.#movements);
+        return this;
+    }
+}
+
+let account1 = new Account("Aarav","INR",1234) // Hi Aarav, your account has been created with en-US
+account1.deposite(120)
+account1.withdraw = 45
+account1.request_loan(1000)
+account1.deposite(43).transactions() // Your last transactions are:  (4) [120, -45, 1000, 43]
+console.log('Your balance is: ',account1.balance) // Your balance is:  1118
+account1.transactions() // Your last transactions are:  (4) [120, -45, 1000, 43]

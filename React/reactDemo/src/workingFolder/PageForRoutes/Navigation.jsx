@@ -1,9 +1,11 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Gibberish from "../randomThings/Gibberish";
 import ThemeChanger from "../randomThings/ThemeChanger";
+import { useDispatch, useSelector } from "react-redux";
 
 function Navigation() {
   let location = useLocation();
+  let value = useSelector((state)=>state.cart)
   // let {id} = useParams()
   return (
     <>
@@ -16,6 +18,11 @@ function Navigation() {
       >
         {/* code from Jibrish.jsx ends here */}
         <Gibberish />
+        {/* Current Path */}
+        <h3 style={{ textAlign: "center", display: "block" }}>
+          Current path is{" "}
+          <i style={{ marginLeft: "0.5rem" }}>{location.pathname}</i> .
+        </h3>
         {/* Theme Chnager */}
         <ThemeChanger />
       </div>
@@ -25,14 +32,10 @@ function Navigation() {
           display: "flex",
           flexWrap: "wrap",
           flexDirection: "row",
-          justifyContent: "space-around",
-          padding: "1rem",
+          justifyContent: "space-between",
+          // padding: "1rem",
         }}
       >
-        <h3 style={{ textAlign: "center", display: "block" }}>
-          Current path is{" "}
-          <i style={{ marginLeft: "0.5rem" }}>{location.pathname}</i> .
-        </h3>
         <div
           style={{
             display: "flex",
@@ -49,6 +52,9 @@ function Navigation() {
           </Link>
           <Link to="/contact">
             <button style={{ marginLeft: "0.5rem" }}>Contact</button>
+          </Link>
+          <Link to="/reduxdemo">
+            <button style={{ marginLeft: "0.5rem" }}>Redux Demo</button>
           </Link>
           <Link to="/courses">
             <button style={{ marginLeft: "0.5rem" }}>Courses</button>
@@ -70,7 +76,9 @@ function Navigation() {
           <Link to="/login">
             <button style={{ marginRight: "0.5rem" }}>Login</button>
           </Link>
-          <button>Cart</button>
+          <Link to="/cart">
+          <button>Cart (<span style={{color:'gold'}}> {value.length} </span>)</button>
+          </Link>
         </div>
       </div>
       <div
