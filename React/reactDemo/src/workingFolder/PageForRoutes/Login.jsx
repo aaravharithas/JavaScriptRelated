@@ -7,15 +7,20 @@ function Login(){
     handleSubmit,
     reset,
     watch,
-    formState: { errors },
+    formState: { errors,isSubmitting },
   } = useForm()
   
   let [members,setMembers] = useState([])
   
   function onsubmit (data){
-    console.log(data)
-    setMembers([...members,data])
-    reset()
+    return new Promise ((res,rej)=>{
+        setTimeout(()=>{
+            res()
+            console.log(data)
+            setMembers([...members,data])
+            reset()
+        },2500)
+    })
     }
 
 
@@ -34,7 +39,7 @@ function Login(){
             {errors.lastname && <span style={{color:"red"}}> <small>{errors.lastname.message}</small></span>}
             <br />
             <br />
-            <input type="submit" />
+            <input type="submit" disabled={isSubmitting}  value={((isSubmitting)?"Submitting":"Submit")}/>
         </form>
         <div>
             <h2>Members of DataList</h2>

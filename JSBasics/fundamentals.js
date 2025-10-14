@@ -71,6 +71,8 @@ obj['yeargap'](20)
 
 // shallow copy of obj using spread
 objCopy = {...obj}
+// deep copy of obj
+objDeepCopy = JSON.parse(JSON.stringify(obj))
 // optional chaining
 console.log(obj.address.state) // Haryana
 console.log(obj.district.city) // it shows error because there is no district key in obj object.
@@ -890,7 +892,7 @@ class Account{
         this.currency = currency;
         this.locate = navigator.language; // using navigator jus for fun
         this.location = "India";
-        // Private methods
+        // Protected methods
         this._pin = pin; // unlike python you can still access it by: Instance._pin
         this._movements = [];
         console.log(`Hi ${this.name}, your account has been created with ${this.locate}`);
@@ -899,7 +901,7 @@ class Account{
     deposite(val){
         this._movements.push(val)
     }
-    // Private Function
+    // Protected Function
     _loan_approve(val){
         return true
     }
@@ -936,6 +938,8 @@ class Account{
     // Private Fields : not working properly till 2025
     #movements = [];
     #pin;
+    // Protected Fields: a message from coder to coder about how to handle the perticular variable or method.
+    _country = 'India'
     // static field : only accessible by the class.
     static location = "India";
 
@@ -982,3 +986,40 @@ account1.request_loan(1000)
 account1.deposite(43).transactions() // Your last transactions are:  (4) [120, -45, 1000, 43]
 console.log('Your balance is: ',account1.balance) // Your balance is:  1118
 account1.transactions() // Your last transactions are:  (4) [120, -45, 1000, 43]
+
+
+// ------------------------------------------ Asyncronous Javascript And Xml -----------------------
+
+const request = new XMLHttpRequest()
+request.open("GET","https://restcountries.com/v3.1/name/India")
+request.send()
+request.addEventListener("load",function(){
+    let data = JSON.parse(this.responseText);
+    console.log(data)
+})
+
+// ----------------------------------- CallBack Hell ---------------------------------------
+setTimeout(() => {
+    console.log(`hello after 3 sec`);
+    setTimeout(() => {
+        console.log(`hello after 1 sec`);
+        setTimeout(() => {
+            console.log(`hello after 2 sec`);
+            setTimeout(() => {
+                console.log(`hello after 1 sec`);
+            }, 2000);
+        }, 2000);
+    }, 1000);
+}, 3000);
+
+// -------------------------------------- Promises ----------------------------------------
+function delay(ms) {
+  return new Promise(resolve => {
+          setTimeout(() => {
+        console.log(`Hello in ${ms} milliseconds.`);
+              resolve();
+    }, ms)
+  });
+}
+
+delay(3000).then(()=>delay(1000))
