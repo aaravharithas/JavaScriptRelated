@@ -10,7 +10,7 @@ function Register(){
             ...prev,
             [name]:value
         }))
-        // console.log("value of formData after change: ",formData)
+        console.log("value of formData after change: ",formData)
         // console.log("value of input: ",e.target.value)
     }
     let [errors,setErrors] = useState({})
@@ -36,7 +36,7 @@ function Register(){
         setFormData({firstname:"",lastname:""})
         }
     }
-    console.log("Error are: ",errors)
+    // console.log("Error are: ",errors)
 
     return(
         <>
