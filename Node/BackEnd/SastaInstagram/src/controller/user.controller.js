@@ -1,6 +1,7 @@
 const express = require("express");
 const UserModel = require("../model/User.model")
 const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
 
 
 async function userAll(req,res){
@@ -11,19 +12,28 @@ async function userAll(req,res){
 
 async function userLogIn (req,res){
     let {username,password} = req.body;
-    console.log(req.body);
     let user = await UserModel.findOne({username:username})
     // console.log(user)
     if(!user){
         return res.json({"message":"user doesn't exists","username":username,"password":password})
     }
-    if (user.password != password){
-        return res.json({"message":"password didn't match","username":username,"password":password})
-    }
-    token = jwt.sign({id:user._id},process.env.JWT_SECRET_KEY)
-    // res.status(200).json({"message":"user logged in",user,"token":token})
-    res.cookie("token",token)
-    res.status(200).json({"message":"user logged in",user})
+    // if (user.password != password){
+    //     return res.json({"message":"password didn't match","username":username,"password":password})
+    // }
+    bcrypt.compare(password,user.password,(err,result)=>{
+        if (err){
+            console.log("got error while checking password")
+        }
+        if (result){
+            token = jwt.sign({id:user._id},process.env.JWT_SECRET_KEY)
+            // res.status(200).json({"message":"user logged in",user,"token":token})
+            res.cookie("token",token)
+            return res.status(200).json({"message":"user logged in",user})
+        }
+        else{
+            return res.status(404).json({"message":"password didn't match","username":username,"password":password})
+        }
+    })
 }
 
 async function userRegister(req,res){
@@ -36,16 +46,20 @@ async function userRegister(req,res){
     if (user){
         return res.send(`username already exists.`)
     }
-    let obj = {"username":username,
-        "name":name,
-        "email":email,
-        "password":password} 
-        let new_user = await UserModel.create(obj);
-        console.log("new user",new_user)
-        let token = jwt.sign({id:new_user._id},process.env.JWT_SECRET_KEY)
-        // res.status(200).json({user:obj,token:token})
-        res.cookie("token",token)
-        res.status(200).json(new_user)
+    bcrypt.hash(password,12,async(err,result)=>{
+        if (err){
+            console.log("got error while hashing the password",err)
+            return
+        }
+        let new_user = await UserModel.create({"username":username,
+            "name":name,
+            "email":email,
+            "password":result});
+            console.log("new user",new_user)
+            let token = jwt.sign({id:new_user._id},process.env.JWT_SECRET_KEY)
+            res.cookie("token",token)
+            return res.status(200).json(new_user)
+        })
 }
 
 async function userLogout (req,res){
