@@ -16,7 +16,7 @@ export default function Feed() {
   // Function to fetch posts
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/", {
+      const response = await axios.get(import.meta.env.VITE_API_BASEURL + "", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Send the token in the Authorization header
         },
@@ -30,7 +30,7 @@ export default function Feed() {
   // Function to fetch users
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/user/");
+      const response = await axios.get(import.meta.env.VITE_API_BASEURL + "user/");
       
       // Check if response.data is an array
       if (Array.isArray(response.data.data)) {
@@ -101,7 +101,7 @@ export default function Feed() {
       {/* Home Container */}
       <HomeContainer>
         <FeedContainer>
-          {posts.map((post) => (
+          {[...posts].reverse().map((post) => (
             <Post key={post._id}> {/* Assuming post._id is unique */}
               <PostHeader>
                 <Username onClick={()=>{navigate(`/account/${post.userid}`)}}>{getUsername(post.userid)}</Username> {/* Get the username by matching post's userId */}

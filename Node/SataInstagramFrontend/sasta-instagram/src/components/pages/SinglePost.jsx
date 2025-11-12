@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Topbar from "../pages/UI/Topbar";
 import Footer from "./UI/Footer";
 
 export default function SinglePost() {
   const { id } = useParams();
+  const navigate = useNavigate(); // For redirect after deletion
   const [post, setPost] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
@@ -17,13 +18,12 @@ export default function SinglePost() {
       try {
         const token = localStorage.getItem("token");
 
-        // Fetch current user, all users, and all posts in parallel
         const [userRes, usersRes, postsRes] = await Promise.all([
-          axios.get("http://127.0.0.1:3000/user/user", {
+          axios.get(import.meta.env.VITE_API_BASEURL + "user/user", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://127.0.0.1:3000/user/"),
-          axios.get("http://127.0.0.1:3000/", {
+          axios.get(import.meta.env.VITE_API_BASEURL + "user/"),
+          axios.get(import.meta.env.VITE_API_BASEURL + "", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -54,6 +54,24 @@ export default function SinglePost() {
     post.userid &&
     currentUser._id.toString() === post.userid.toString();
 
+  // ✅ Delete handler
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${import.meta.env.VITE_API_BASEURL}post/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert("Post deleted successfully!");
+      navigate("/feed"); // Redirect to feed after deletion
+    } catch (err) {
+      console.error("Error deleting post:", err);
+      alert("Failed to delete post.");
+    }
+  };
+
   return (
     <PageWrapper>
       <Topbar />
@@ -61,7 +79,7 @@ export default function SinglePost() {
         <PostWrapper>
           <PostHeader>
             <Username>{ownerName}</Username>
-            {isOwner && <DeleteButton>Delete</DeleteButton>}
+            {isOwner && <DeleteButton onClick={handleDelete}>Delete</DeleteButton>}
           </PostHeader>
           <PostImage src={post.imageurl} alt={post.context || "Post"} />
           {post.context && <PostCaption>{post.context}</PostCaption>}
@@ -81,7 +99,7 @@ const PageWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  flex: 1; /* This pushes footer to the bottom */
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: flex-start;

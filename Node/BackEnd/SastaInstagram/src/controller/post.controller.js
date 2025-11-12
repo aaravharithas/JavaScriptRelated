@@ -28,4 +28,31 @@ async function createPost(req,res){
 }
 
 
-module.exports = {getPosts, userAccount, createPost}
+// Delete a single post
+async function deletePost(req, res) {
+  try {
+    const postId = req.params.id;
+    const user = req.user;
+
+    // Find the post
+    const post = await PostModel.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Only allow the owner to delete
+    if (post.userid.toString() !== user._id.toString()) {
+      return res.status(403).json({ message: "You are not authorized to delete this post" });
+    }
+
+    // Delete the post
+    await PostModel.findByIdAndDelete(postId);
+
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting post:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+module.exports = {getPosts, userAccount, createPost, deletePost}

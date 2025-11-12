@@ -14,7 +14,7 @@ function Account() {
   // Function to fetch user data
   const fetchUser = async (token) => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/user/user", {
+      const response = await axios.get(import.meta.env.VITE_API_BASEURL + "user/user", {
         headers: {
           Authorization: `Bearer ${token}`, // Send token in Authorization header
         },
@@ -28,7 +28,7 @@ function Account() {
   // Function to fetch posts data
   const fetchPosts = async (token) => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/", {
+      const response = await axios.get(import.meta.env.VITE_API_BASEURL + "", {
         headers: {
           Authorization: `Bearer ${token}`, // Send token in Authorization header
         },

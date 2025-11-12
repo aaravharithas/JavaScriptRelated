@@ -33,7 +33,7 @@ function Login() {
 
     try {
       // Sending POST request with credentials to the backend
-      const response = await axios.post("http://localhost:3000/user/login", userCredentials, {
+      const response = await axios.post(import.meta.env.VITE_API_BASEURL + "user/login", userCredentials, {
         withCredentials: false, // No need for cookies now, as we'll handle the token directly
       });
 

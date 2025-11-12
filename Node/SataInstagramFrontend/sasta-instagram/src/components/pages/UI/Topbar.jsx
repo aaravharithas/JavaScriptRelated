@@ -8,6 +8,13 @@ import { Link, useNavigate } from "react-router-dom";
 function Topbar() {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    // Remove token and redirect
+    localStorage.removeItem("token");
+    alert("You have been logged out.");
+    navigate("/"); // Redirect to login page
+  };
+
   return (
     <TopbarContainer>
       <div className="TopbarLeft">
@@ -15,26 +22,29 @@ function Topbar() {
           <span className="Logo">Sasta Instagram</span>
         </Link>
       </div>
+
       <div className="TopbarCenter">
         <div className="Searchbar">
           <AiOutlineSearchStyled />
           <input type="text" className="SearchInput" placeholder="Search" />
         </div>
       </div>
+
       <div className="TopbarRight">
         <div className="TopbarIcons">
           <div className="TopbarIconItem">
             <FiSearchStyled />
           </div>
           <div className="TopbarIconItem">
-            <BsPlusSquareStyled onClick={() => { navigate("/post"); }} />
+            <BsPlusSquareStyled onClick={() => navigate("/post")} />
           </div>
           <img
-            onClick={() => { navigate("/account"); }}
+            onClick={() => navigate("/account")}
             className="TopbarImg"
             alt="Profile"
             src="https://picsum.photos/500/500?random=2"
           />
+          <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </div>
       </div>
     </TopbarContainer>
@@ -124,6 +134,8 @@ const TopbarContainer = styled.div`
   .TopbarIcons {
     display: flex;
     position: relative;
+    align-items: center;
+    gap: 10px;
   }
 
   .TopbarIconItem {
@@ -160,6 +172,27 @@ const TopbarContainer = styled.div`
       font-size: 22px;
       padding: 0 10px;
     }
+  }
+`;
+
+/* Logout Button */
+const LogoutButton = styled.button`
+  background-color: #ff4b4b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #e13a3a;
+  }
+
+  @media (max-width: 655px) {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 `;
 

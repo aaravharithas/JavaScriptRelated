@@ -15,7 +15,7 @@ function Account() {
   // Fetch all users
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/user/");
+      const response = await axios.get(import.meta.env.VITE_API_BASEURL+"user/");
       const matchedUser = response.data.data.find((user) => user._id === id); // Access users inside "data"
       setUser(matchedUser); // Set the user data
     } catch (error) {
@@ -26,7 +26,7 @@ function Account() {
   // Fetch all posts
   const fetchPosts = async (token) => {
     try {
-      const response = await axios.get("http://127.0.0.1:3000/", {
+      const response = await axios.get(import.meta.env.VITE_API_BASEURL+"", {
         headers: {
           Authorization: `Bearer ${token}`, // Send token in Authorization header
         },

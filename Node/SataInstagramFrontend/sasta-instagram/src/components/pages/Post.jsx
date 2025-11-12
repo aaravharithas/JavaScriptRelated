@@ -39,7 +39,7 @@ function Post() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://127.0.0.1:3000/createpost",
+        import.meta.env.VITE_API_BASEURL+"createpost",
         formData,
         {
           headers: {
