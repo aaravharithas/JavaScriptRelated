@@ -8,7 +8,13 @@ const PostModel = require('../model/Post.model')
 async function getPosts(req,res){
     postData = await PostModel.find()
     user = await req.user
-    return res.status(200).json({"message":"fetched all data successfully","user":user,postData})
+    return res.status(200).json({"message":"fetched all data successfully","posts":postData})
+}
+
+async function userAccount(req,res){
+    let user = await req.user
+    let userPosts = await PostModel.find({userid:user._id})
+    res.status(200).json({"message":"data fetched successfully","user":user,"posts":userPosts})
 }
 
 async function createPost(req,res){
@@ -21,4 +27,5 @@ async function createPost(req,res){
     res.status(200).json({"message":"files send successfully","data":postobj})
 }
 
-module.exports = {getPosts, createPost}
+
+module.exports = {getPosts, userAccount, createPost}

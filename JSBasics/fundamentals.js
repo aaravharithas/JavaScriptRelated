@@ -396,8 +396,8 @@ value = document.querySelector("h1") // get first element of h1 tag
 value = document.querySelectorAll("h1") // get list of all h1 tags.
 
 // change element
-value.innerHTML // show text including \n and html tags.
-value.innerText // show inner text excluding \n and html tags.
+value.innerHTML // show text including \n and html tags if the innervalue itself is html(like bold tag inside paragraph).
+value.innerText // show inner text excluding \n and html tags(ommit the bold tag inside paragraph).
 value.textContent // show text content including \n and excluding html tags.
 
 // change attributes
@@ -1022,4 +1022,62 @@ function delay(ms) {
   });
 }
 
-delay(3000).then(()=>delay(1000))
+delay(3000).then(()=>delay(2000)).then(()=>delay(1000))
+
+// -------------------------------- Fetching API using Promise ------------------------
+
+function callSingleApi(country) {
+    fetch(`https://restcountries.com/v3.1/name/${country}`)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data[0])
+            let [border] = data[0].borders
+            console.log(border)
+        })
+        .catch((err)=>{
+            console.log("got error while fetching api")
+        })
+    }
+callSingleApi("India")
+
+// -------------------------------- Fetching API callback -----------------------------
+function callbackApi(country) {
+    // calling main api
+    console.log("calling main api")
+    fetch(`https://restcountries.com/v3.1/name/${country}`)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data[0])
+            let [border] = data[0].borders
+            // calling first callback api
+            console.log("calling first callback api")
+            return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data[0])
+            let [border] = data[0].borders
+            // calling second callback api
+            console.log("calling second callback api")
+            return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data[0])
+            let [border] = data[0].borders
+            // calling third callback api
+            console.log("calling third callback api")
+            return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data[0])
+            let [border] = data[0].borders
+            console.log(border)
+        })
+        .catch((err)=>{
+            console.log("got error while fetching multiple callback api")
+        })
+}
+
+callbackApi("India")
