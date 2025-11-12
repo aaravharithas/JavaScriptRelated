@@ -29,7 +29,7 @@ const response = await ai.models.generateContent({
   contents: contents,
   config: {
       systemInstruction: `
-      You are a extra-dark humor caption generator.
+      You are a comedy caption generator.
       Make the captions more related to the image.
       Generate the caption in hinglish which are less than 75 words with hashtags.
       Do not put dark humor in the hastags.
