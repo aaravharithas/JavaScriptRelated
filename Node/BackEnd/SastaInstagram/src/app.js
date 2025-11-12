@@ -10,7 +10,8 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",  // frontend running on localhost
-    "http://127.0.0.1:5173"   // frontend running on 127.0.0.1
+    "http://127.0.0.1:5173",   // frontend running on 127.0.0.1
+    "*"
   ],
   credentials: true,  // Allow cookies to be sent across domains
 }));
