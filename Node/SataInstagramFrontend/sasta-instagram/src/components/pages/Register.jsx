@@ -34,7 +34,7 @@ function Register() {
       );
 
       if (response.status === 200 || response.status === 201) {
-        alert("Registration successful! Please log in.");
+        // alert("Registration successful! Please log in.");
         navigate("/"); // ✅ Redirect to login page
       } else {
         alert(response.data.message || "Registration failed.");

@@ -50,7 +50,7 @@ function Post() {
       );
 
       if (response.status === 200) {
-        alert("Post uploaded successfully!");
+        // alert("Post uploaded successfully!");
         navigate("/feed");
       } else {
         alert("Failed to upload the post.");
