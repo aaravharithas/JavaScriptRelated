@@ -8,9 +8,15 @@ const app = express();
 
 // Update CORS configuration to allow both localhost and 127.0.0.1
 app.use(cors({
-  origin: [process.env.FRONTEND_BASE_URL, "http://localhost:5173", "http://127.0.0.1:5173"],
+  origin: [
+    "https://java-script-related.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    process.env.FRONTEND_BASE_URL,
+  ],
   credentials: true,
 }));
+
 
 
 app.use(cookie());
