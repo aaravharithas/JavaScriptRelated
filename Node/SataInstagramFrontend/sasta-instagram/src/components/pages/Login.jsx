@@ -32,24 +32,21 @@ function Login() {
     };
 
     try {
-      // Sending POST request with credentials to the backend
-      const response = await axios.post(import.meta.env.VITE_API_BASEURL + "user/login", userCredentials, {
-        withCredentials: false, // No need for cookies now, as we'll handle the token directly
-      });
+  const response = await axios.post(import.meta.env.VITE_API_BASEURL + "user/login", userCredentials);
 
-      if (response.status === 200) {
-        // On successful login, store the token in localStorage
-        localStorage.setItem("token", response.data.token); // Store the token in localStorage
-
-        // Optionally, navigate to another page after successful login
-        navigate("/feed"); // You can change this to the appropriate route
-      } else {
-        alert("Invalid credentials");
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-      alert("Error logging in. Please try again.");
-    }
+  if (response.status === 200 && response.data.token) {
+    localStorage.setItem("token", response.data.token);
+    navigate("/feed");
+  } else {
+    alert(response.data.message || "Invalid credentials");
+  }
+} catch (error) {
+  if (error.response && error.response.status === 401) {
+    alert("Invalid username or password");
+  } else {
+    alert("Error logging in. Please try again.");
+  }
+}
   };
 
   return (
